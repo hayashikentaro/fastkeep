@@ -26,10 +26,6 @@ export default async function Home({ searchParams }: HomeProps) {
     admin.from("google_connections").select().eq("user_id", user.id).maybeSingle()
   ]);
 
-  if (notesError) {
-    throw new Error(notesError.message);
-  }
-
   return (
     <main className="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
       <header className="flex flex-col gap-4 border-b border-line pb-5 md:flex-row md:items-center md:justify-between">
@@ -65,6 +61,18 @@ export default async function Home({ searchParams }: HomeProps) {
         <p className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
           タイトルまたは本文を入力してください。
         </p>
+      ) : null}
+
+      {notesError ? (
+        <section className="mt-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">
+          <h2 className="font-semibold">Supabase の設定を確認してください。</h2>
+          <p className="mt-2">
+            メモ一覧を読み込めませんでした。Supabase SQL Editor で{" "}
+            <code className="rounded bg-white px-1 py-0.5">supabase/schema.sql</code>{" "}
+            を実行済みか確認してください。
+          </p>
+          <p className="mt-2 break-words text-xs text-red-700">{notesError.message}</p>
+        </section>
       ) : null}
 
       <section className="mt-6">

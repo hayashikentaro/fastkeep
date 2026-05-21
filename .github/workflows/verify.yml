@@ -1,0 +1,35 @@
+name: Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: dummy
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy
+      SUPABASE_SECRET_KEY: dummy
+      SUPABASE_SERVICE_ROLE_KEY: dummy
+      GOOGLE_CLIENT_ID: dummy
+      GOOGLE_CLIENT_SECRET: dummy
+      APP_BASE_URL: http://127.0.0.1:3100
+      GOOGLE_REDIRECT_URI: http://127.0.0.1:3100/auth/google/callback
+      ENABLE_RUNTIME_SMOKE: "1"
+      RUN_SUPABASE_SMOKE: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test:e2e
