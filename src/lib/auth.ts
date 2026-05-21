@@ -4,15 +4,15 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export async function getCurrentUser() {
   const supabase = createSupabaseServerClient();
   const {
-    data: { user },
+    data: { session },
     error
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getSession();
 
-  if (error || !user) {
+  if (error || !session?.user) {
     return null;
   }
 
-  return user;
+  return session.user;
 }
 
 export async function requireUser() {
