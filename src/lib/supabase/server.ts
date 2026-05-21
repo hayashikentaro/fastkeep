@@ -18,6 +18,9 @@ export function createSupabaseServerClient() {
     env.NEXT_PUBLIC_SUPABASE_URL,
     env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
+      global: {
+        fetch: (input, init) => fetch(input, { ...init, cache: "no-store" })
+      },
       cookies: {
         getAll() {
           return cookieStore.getAll();
@@ -39,6 +42,9 @@ export function createSupabaseAdminClient() {
     config.NEXT_PUBLIC_SUPABASE_URL,
     config.SUPABASE_SECRET_KEY,
     {
+      global: {
+        fetch: (input, init) => fetch(input, { ...init, cache: "no-store" })
+      },
       auth: {
         persistSession: false,
         autoRefreshToken: false
