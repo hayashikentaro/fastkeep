@@ -67,3 +67,13 @@ test("サーバー runtime smoke が成功する", async ({ request }) => {
   const body = await response.json();
   expect(body.ok).toBe(true);
 });
+
+test("Google OAuth の api callback 互換ルートが 404 にならない", async ({ request }) => {
+  const response = await request.get("/api/auth/google/callback?state=test&code=test", {
+    maxRedirects: 0
+  });
+
+  expect(response.status()).toBeGreaterThanOrEqual(300);
+  expect(response.status()).toBeLessThan(400);
+  expect(response.headers().location).toContain("error=google-oauth");
+});
