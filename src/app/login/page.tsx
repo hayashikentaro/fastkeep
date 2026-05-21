@@ -2,7 +2,30 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { LoginForm } from "@/components/login-form";
 
-export default async function LoginPage() {
+type LoginPageProps = {
+  searchParams?: {
+    sent?: string;
+    error?: string;
+  };
+};
+
+function loginMessage(searchParams?: LoginPageProps["searchParams"]) {
+  if (searchParams?.sent === "1") {
+    return "ログイン用リンクをメールで送信しました。";
+  }
+
+  if (searchParams?.error === "invalid-email") {
+    return "有効なメールアドレスを入力してください。";
+  }
+
+  if (searchParams?.error === "send-failed") {
+    return "ログインリンクを送信できませんでした。Supabase Auth の設定を確認してください。";
+  }
+
+  return undefined;
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
   const user = await getCurrentUser();
 
   if (user) {
@@ -18,7 +41,7 @@ export default async function LoginPage() {
           メモは FastKeep に保存され、期限があるものだけ Google Calendar に予定として投影されます。
         </p>
       </div>
-      <LoginForm />
+      <LoginForm message={loginMessage(searchParams)} />
     </main>
   );
 }
