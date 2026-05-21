@@ -51,6 +51,8 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 - Site URL: `http://localhost:3000`
 - Redirect URLs: `http://localhost:3000/auth/callback`
 
+メールテンプレートを変更している場合は、ログインリンクに Supabase 標準の `{{ .ConfirmationURL }}` を使ってください。古いメールや一度開いたメールリンクは `otp_expired` になり、再利用できません。
+
 5. Google Cloud Console で OAuth クライアントを作成し、承認済みリダイレクト URI に以下を追加します。
 
 - `http://localhost:3000/auth/google/callback`

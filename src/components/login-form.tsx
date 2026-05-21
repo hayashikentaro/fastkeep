@@ -21,6 +21,9 @@ export function LoginForm({ message }: { message?: string }) {
         ログインリンクを送る
       </button>
       {message ? <p className="mt-3 text-sm text-ink/70">{message}</p> : null}
+      <p className="mt-3 text-xs leading-5 text-ink/55">
+        メールリンクが期限切れの場合は、この画面から新しいリンクを送信してください。
+      </p>
     </form>
   );
 }

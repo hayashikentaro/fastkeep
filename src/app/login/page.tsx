@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { LoginForm } from "@/components/login-form";
+import { LoginUrlError } from "@/components/login-url-error";
 
 type LoginPageProps = {
   searchParams?: {
@@ -41,6 +42,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           メモは FastKeep に保存され、期限があるものだけ Google Calendar に予定として投影されます。
         </p>
       </div>
+      <LoginUrlError />
       <LoginForm message={loginMessage(searchParams)} />
     </main>
   );
