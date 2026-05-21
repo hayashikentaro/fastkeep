@@ -32,6 +32,10 @@ create table if not exists public.google_connections (
 create index if not exists notes_user_updated_idx on public.notes (user_id, is_archived, is_pinned desc, updated_at desc);
 create index if not exists notes_due_idx on public.notes (user_id, due_at) where due_at is not null;
 
+grant usage on schema public to authenticated, service_role;
+grant select, insert, update, delete on table public.notes to authenticated, service_role;
+grant select, insert, update, delete on table public.google_connections to authenticated, service_role;
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
