@@ -23,6 +23,10 @@ function loginMessage(searchParams?: LoginPageProps["searchParams"]) {
     return "ログインリンクを送信できませんでした。Supabase Auth の設定を確認してください。";
   }
 
+  if (searchParams?.error === "auth-callback") {
+    return "ログイン処理を完了できませんでした。新しいリンクを送信してください。";
+  }
+
   return undefined;
 }
 

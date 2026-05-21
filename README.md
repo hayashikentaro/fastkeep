@@ -51,7 +51,15 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 - Site URL: `http://localhost:3000`
 - Redirect URLs: `http://localhost:3000/auth/callback`
 
-メールテンプレートを変更している場合は、ログインリンクに Supabase 標準の `{{ .ConfirmationURL }}` を使ってください。古いメールや一度開いたメールリンクは `otp_expired` になり、再利用できません。
+SSR/PKCE とメールクライアントのリンク事前読み込みを避けるため、Supabase Auth の Magic Link テンプレートは次のリンクに変更してください。
+
+```html
+<a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/">
+  FastKeep にログイン
+</a>
+```
+
+このリンクは確認画面を開くだけで、ユーザーが画面上のボタンを押した時に `token_hash` を検証します。
 
 5. Google Cloud Console で OAuth クライアントを作成し、承認済みリダイレクト URI に以下を追加します。
 
